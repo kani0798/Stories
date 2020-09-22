@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Reddit stories</title>
+
+    <link rel="icon" href="https://images-eu.ssl-images-amazon.com/images/I/418PuxYS63L.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+
+    <!-- demo styles -->
+    <link rel="stylesheet" href="{% static 'demo/style.css' %}">
+
+    <!-- lib styles -->
+    <link rel="stylesheet" href="{% static 'dist/zuck.min.css' %}">
+    
+    <!-- lib skins -->
+    <link rel="stylesheet" href="{% static 'dist/skins/snapgram.css' %}">
+    <link rel="stylesheet" href="{% static 'dist/skins/vemdezap.css' %}">
+    <link rel="stylesheet" href="{% static 'dist/skins/facesnap.css' %}">
+    <link rel="stylesheet" href="{% static 'dist/skins/snapssenger.css' %}">
+  </head>
+
+  <body>
+    <h1 id="header">&nbsp;</h1>
+
+    <a href="https://ramon.codes/projects/zuck.js" target="_blank" class="disclaimer">
+      <img src="https://www.iconfinder.com/data/icons/social-media-black-white-2/512/BW_Reddit_glyph_svg-512.png" alt="zuck.js logo" />
+
+      <p>This a demonstration of <strong>zuck.js</strong> javascript library.</p>
+      <p>Not associated with Facebook, Instagram, WhatsApp or Snapchat.</p>
+    </a>
+
+    <div id="stories" class="storiesWrapper"></div>
+
+    <div class="skin">
+      Choose your theme:
+
+      <select id="skin" onchange="changeSkin(this.options[this.selectedIndex].value);">
+        <option value="Snapgram">Snapgram (without fullscreen)</option>
+        <option value="FaceSnap">FaceSnap (with fullscreen)</option>
+        <option value="VemDeZAP">VemDeZAP (timeline + arrows)</option>
+        <option value="Snapssenger">Snapssenger (with previews)</option>
+      </select>
+    </div>
+
+    <script src="{% static 'dist/zuck.min.js' %}"></script>
+    <script src="{% static 'demo/script.js' %}"></script>
+
+    <script>
+      var currentSkin = getCurrentSkin();
+      var stories = new Zuck('stories', {
+        backNative: true,
+        previousTap: true,
+        skin: currentSkin['name'],
+        autoFullScreen: currentSkin['params']['autoFullScreen'],
+        avatars: currentSkin['params']['avatars'],
+        paginationArrows: currentSkin['params']['paginationArrows'],
+        list: currentSkin['params']['list'],
+        cubeEffect: currentSkin['params']['cubeEffect'],
+        localStorage: true,
+        stories: [
+          Zuck.buildTimelineItem(
+            "entertainment",
+            "https://styles.redditmedia.com/t5_2qh0f/styles/communityIcon_0wn0ynky4gc51.png?width=256&s=f8686cf1fb64425fd430eb402b6cc94e0bc1458c",
+            "Entertainment",
+            "https://www.reddit.com/r/entertainment/",
+            timestamp(),
+            [
+              {% for image, url, text in entertainment_news %}
+                ["id", "photo", 3, "{{ image }}", "", '{{ url }}', '{{ text|truncatewords:200 }}', false, timestamp()],
+              {% endfor %}
+            ],
+          ),
+          Zuck.buildTimelineItem(
+	        "technews",
+	        "https://styles.redditmedia.com/t5_2qi4j/styles/communityIcon_a0b0l0lb75k41.png?width=256&s=7a61d06f46b02b5269fde1257f5cdbe01dbb9408",
+	        "TechNews",
+	        "https://www.reddit.com/r/technews/",
+	        timestamp(),
+	        [
+              {% for image, url, text in tech_news %}
+                ["id", "photo", 3, "{{ image }}", "", '{{ url }}', '{{ text|truncatewords:200 }}', false, timestamp()],
+              {% endfor %}
+            ],
+	      ),
+          Zuck.buildTimelineItem(
+	        "sport",
+	        "https://styles.redditmedia.com/t5_2qgzy/styles/communityIcon_rvt3zjh1fc551.png?width=256&s=87c202e9000d8061f18a9d72b106bdc9c8a219cc",
+	        "Sport",
+	        "https://www.reddit.com/r/sports/",
+	        timestamp(),
+	        [
+              {% for image, url, text in sport_news %}
+	            ["id", "photo", 3, "{{ image }}", "", '{{ url }}', '{{ text|truncatewords:200 }}', false, timestamp()],
+              {% endfor %}
+            ],
+	      ),
+          Zuck.buildTimelineItem(
+	        "politics",
+	        "https://styles.redditmedia.com/t5_2cneq/styles/communityIcon_fy84mdgh75201.jpg?width=256&format=pjpg&s=16279ee48ed3c9c4f9d05ad03da3be8368afea4f",
+	        "Politics",
+	        "https://www.reddit.com/r/politics/",
+	        timestamp(),
+	        [
+              {% for image, url, text in politics_news %}
+	            ["id", "photo", 3, "{{ image }}", "", '{{ url }}', '{{ text|truncatewords:200 }}', false, timestamp()],
+              {% endfor %}
+            ],
+	      ),
+          Zuck.buildTimelineItem(
+	        "internetisbeautiful",
+	        "https://b.thumbs.redditmedia.com/k7fHE51fuhbYJRT2e9s1rXIp2ZtA7ks-cNFvQuNbfcE.png",
+	        "InternetIsBeautiful",
+	        "https://www.reddit.com/r/InternetIsBeautiful/",
+	        timestamp(),
+	        [
+              {% for image, url, text in internet_news %}
+	            ["id", "photo", 3, "{{ image }}", "", '{{ url }}', '{{ text|truncatewords:200 }}', false, timestamp()],
+              {% endfor %}
+            ],
+	      ),
+
+        ]
+      });
+    </script>
+  </body>
+</html>
