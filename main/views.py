@@ -1,25 +1,32 @@
 from django.shortcuts import render
-
+from google.cloud import firestore
 from .parse import main
+from multiprocessing import Pool
 
 
 def story(request):
-    entertainment_news = main('https://www.reddit.com/r/entertainment.json')
-    entertainment_news = list(entertainment_news)
 
-    sport_news = main('https://www.reddit.com/r/sports.json')
-    sport_news = list(sport_news)
+    db = firestore.Client()
+    users_ref = db.collection(u'RedditNews')
+    entertainment = users_ref.document('entertainment').get().to_dict()
+    entertainment_news = list(entertainment['entertainment'].values())
 
-    politics_news = main('https://www.reddit.com/r/politics.json')
-    politics_news = list(politics_news)
+    politics = users_ref.document('politics').get().to_dict()
+    politics_news = list(politics['politics'].values())
 
-    internet_news = main('https://www.reddit.com/r/InternetIsBeautiful.json')
-    internet_news = list(internet_news)
+    technews = users_ref.document('technews').get().to_dict()
+    technews_news = list(technews['TechNews'].values())
 
-    tech_news = main('https://www.reddit.com/r/technews.json')
-    tech_news = list(tech_news)
+    internet = users_ref.document('internetisbeautiful').get().to_dict()
+    internet_news = list(internet['InternetIsBeautiful'].values())
+
+    sport = users_ref.document('sport').get().to_dict()
+    sport_news = list(sport['sport'].values())
 
     return render(request, 'main/index.html', locals())
+
+
+
 
 
 

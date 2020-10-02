@@ -21,7 +21,7 @@ def get_links(url):
                 continue
         except KeyError:
             continue
-    return news_images[:7], news_url[:7]
+    return news_images[:3], news_url[:3]
 
 
 def parse_news(news_url):
@@ -40,7 +40,9 @@ def speed(url):
 
 def main(url):
     news_images, news_links = get_links(url)
-    with Pool(100) as p:
+    with Pool(40) as p:
         news_list = p.map(speed, news_links)
     zipped_list = zip(news_images, news_links, news_list)
+    # print(list(zipped_list))
     return list(zipped_list)
+

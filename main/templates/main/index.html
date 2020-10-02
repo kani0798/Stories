@@ -90,7 +90,7 @@
 	        "https://www.reddit.com/r/sports/",
 	        timestamp(),
 	        [
-              {% for image, url, text in sport_news %}
+              {% for url, text in sport_news %}
 	            ["id", "photo", 3, "{{ image }}", "", '{{ url }}', '{{ text|truncatewords:200 }}', false, timestamp()],
               {% endfor %}
             ],
